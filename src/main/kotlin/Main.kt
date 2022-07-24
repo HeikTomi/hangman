@@ -3,10 +3,11 @@
                     "replacement","possibility","passion","painting",
                     "memory","meat","organization","salad","relationship")
 
-val guessed = hashSetOf<String>()
+val correctGuessed = hashSetOf<String>()
+val incorrectGuessed = hashSetOf<String>()
 var errors = 0
 
-fun main(args: Array<String>) {
+fun main() {
     /**
      * Main function for the hangman game
      */
@@ -36,10 +37,11 @@ fun panel(selectedWord: String): Boolean {
 
     drawHangman()
 
+    println("Wrong letters: $incorrectGuessed")
     print("Lives:[${6-errors}] Errors:[$errors] Word:")
 
     for(i in selectedWord.indices){
-        if (selectedWord[i].toString() in guessed)
+        if (selectedWord[i].toString() in correctGuessed)
             print(selectedWord[i])
         else {
             finished = false
@@ -63,18 +65,21 @@ fun runGame(selectedWord: String) {
             println("incorrect input only characters a to z are accepted")
             continue
         }
+
         if(guess in selectedWord){
             println("Correct!")
-            guessed.add(guess)
+            correctGuessed.add(guess)
 
         } else {
             println("No $guess in the word!")
+            incorrectGuessed.add(guess)
             errors++
         }
     }
 
     if(errors == 6){
         drawHangman()
+        println("Correct word was $selectedWord")
         println("Game over!")
     } else {
         println("Congratulations you made it!")
@@ -82,13 +87,14 @@ fun runGame(selectedWord: String) {
 
     println("Press 1 to play agan, any other key to end")
     val selection = readln()
-    if(!selection.isNullOrEmpty() && selection.toInt() == 1){
+    if(!selection.isEmpty() && selection.toInt() == 1){
 
-        val selectedWord = words.random()
+        val newdWord = words.random()
         errors = 0
-        guessed.clear()
+        correctGuessed.clear()
+        incorrectGuessed.clear()
 
-        runGame(selectedWord)
+        runGame(newdWord)
     } else {
         println("Bye bye")
     }
