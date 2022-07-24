@@ -87,7 +87,7 @@ fun runGame(selectedWord: String) {
 
     println("Press 1 to play agan, any other key to end")
     val selection = readln()
-    if(!selection.isEmpty() && selection.toInt() == 1){
+    if(selection.isNotEmpty() && selection.toInt() == 1){
 
         val newdWord = words.random()
         errors = 0
